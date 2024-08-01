@@ -1,0 +1,12 @@
+voxelmorph
+nibabel
+scipy
+IPython
+opencv-python-headless
+scipy
+pydicom
+ipywidgets
+bokeh
+ffmpeg-python
+pandas
+openpyxl
