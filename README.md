@@ -2,8 +2,9 @@
 
 ## Paper
 
-Reducing Motion Artifacts in Craniocervical Background Subtraction Angiography with Deformable Registration and Unsupervised Deep Learning (accepted by Radiology Advances; in press)\
-Authors: Chaochao Zhou, Ramez N. Abdalla, Dayeong An, Syed HA Faruqui, Teymour Sadrieh, Mohayad Al Zein, Rayan Nehme, Ali Shaibani, Sameer A. Ansari, Donald R. Cantrell
+**Reducing Motion Artifacts in Craniocervical Background Subtraction Angiography with Deformable Registration and Unsupervised Deep Learning (accepted by Radiology Advances; in press)**
+
+**Authors**: Chaochao Zhou, Ramez N. Abdalla, Dayeong An, Syed HA Faruqui, Teymour Sadrieh, Mohayad Al Zein, Rayan Nehme, Ali Shaibani, Sameer A. Ansari, Donald R. Cantrell
 
 
 ## Summary Statement
