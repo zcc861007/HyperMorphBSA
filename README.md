@@ -8,7 +8,7 @@
 
 
 ## Summary Statement
-We have implemented an unsupervised deep learning deformable registration framework utilizing a novel image similarity loss function to reduce the motion artifacts commonly encountered in digital subtraction angiography (DSA).
+We have implemented an unsupervised deep learning deformable registration framework utilizing a novel image similarity loss function to reduce the motion artifacts commonly encountered in digital subtraction angiography (DSA). The models available in the repo have been trained on a dataset with more than 5,000 angiographic series acquired in 2019. 
 
 ## Key Points
 1.	A deep learning, fast, deformable registration model based on the HyperMorph framework is presented for head background subtraction angiography (BSA).
