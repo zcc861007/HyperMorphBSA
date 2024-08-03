@@ -2,10 +2,13 @@
 
 ## Paper
 
-**Reducing Motion Artifacts in Craniocervical Background Subtraction Angiography with Deformable Registration and Unsupervised Deep Learning (accepted by Radiology Advances; in press)**
+**Reducing Motion Artifacts in Craniocervical Background Subtraction Angiography with Deformable Registration and Unsupervised Deep Learning**
 
 **Authors**: Chaochao Zhou, Ramez N. Abdalla, Dayeong An, Syed HA Faruqui, Teymour Sadrieh, Mohayad Al Zein, Rayan Nehme, Ali Shaibani, Sameer A. Ansari, Donald R. Cantrell
 
+**DOI**: 10.1093/radadv/umae020
+
+**Journal**: Radiology Advances (in press)
 
 ## Summary Statement
 We have implemented an unsupervised deep learning deformable registration framework utilizing a novel image similarity loss function to reduce the motion artifacts commonly encountered in digital subtraction angiography (DSA). The models available in the repo have been trained on a dataset with more than 5,000 angiographic series acquired in 2019. 
