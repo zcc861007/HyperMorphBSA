@@ -67,10 +67,10 @@ $$
 To isolate the vessel layer, we perform an anomaly detection step, in which the vascular densities are identified by their low intensity. As illustrated in Fig. 1, we compare the value of a pixel in the post-contrast frame to the values within the neighborhood (e.g., a patch with 3 x 3 pixels) of the corresponding pixel in the background frame. If the pixel value of the contrast frame is less than all pixel values in the corresponding neighborhood of the background frame, it suggests that the low density of the pixel in the post-contrast frame is due to contrast injection. With this in mind, the separated vessel layer can be formulated as:
 
 $$
-L_{vessel} = \left( I_{C} - I_{BG}' \right) * \mathbf{1}\left( I_{C} < \min\_pool\left( I_{BG}' \right) \right) \tag{6}
+L_{vessel} = \left( I_{C} - I_{BG}' \right) \odot \mathbb{1}\left( I_{C} < \operatorname{minpool}\left( I_{BG}' \right) \right) \tag{6}
 $$
 
-where \(I_{C} - I_{BG}'\) is the BSA with registration learning. \(*\) denotes pixel-wise multiplication. \(\mathbf{1}(condition)\) is a pixel-wise indicator function, which returns 1 if the condition is satisfied and 0 otherwise. \(\min\_pool\left( I_{BG}' \right)\) represents the minimum pooling of \(I_{BG}'\) with a kernel size of 3 x 3, a stride of 1, and same padding. The output has the same shape as \(I_{BG}'\), and is equivalent to obtaining the minimal values in all 3 x 3 patches centered at each pixel of \(I_{BG}'\).
+where \(I_{C} - I_{BG}'\) is the BSA with registration learning. \(\odot\) denotes pixel-wise multiplication. \(\mathbb{1}(\text{condition})\) is a pixel-wise indicator function, which returns 1 if the condition is satisfied and 0 otherwise. \(\operatorname{minpool}\left( I_{BG}' \right)\) represents the minimum pooling of \(I_{BG}'\) with a kernel size of 3 × 3, a stride of 1, and same padding. The output has the same shape as \(I_{BG}'\), and is equivalent to obtaining the minimal values in all 3 × 3 patches centered at each pixel of \(I_{BG}'\).
 
 ## Model Training
 
@@ -79,7 +79,7 @@ Each model (Reg-MSE, Reg-MinMax, and Reg-VLE) was trained on a dataset consistin
 During the training process, we manually examined the model outputs, and observed overfitting with excessive local warping (accordingly, causing new artifacts in the vessel regions of BSA images) at smaller smoothing penalties \(\lambda\) and at longer training durations. Conversely, regularization of the model outputs could be achieved with larger smoothing penalties and shorter training durations. Furthermore, longer training durations required larger magnitudes of \(\lambda\) to suppress overfitting but did not substantially improve BSA image quality. As a result of this observation, and to reduce the computational cost, we performed regularization by early stopping at 10 dataset-level epochs, and then subsequently chose the optimal \(\lambda\) hyperparameter. On a single RTX A6000 GPU, the training duration with 2,523,000 frame-level iterations was approximately 4 days for each model. Future work may be performed to more thoroughly characterize the interaction between training duration and the optimal magnitude of \(\lambda\).
 
 
-## Paper
+## Citation
 
 **Reducing Motion Artifacts in Craniocervical Background Subtraction Angiography with Deformable Registration and Unsupervised Deep Learning**
 
