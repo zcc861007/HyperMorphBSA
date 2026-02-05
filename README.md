@@ -25,16 +25,18 @@ We employ HyperMorph, an unsupervised deep learning framework to learn the non-r
 To train the unsupervised learning framework, the total loss function consists of a scaled image similarity loss \(\mathcal{L}_{sim}/\alpha_{sim}^{2}\) and a smoothing penalty \(\mathcal{L}_{smooth}\):
 
 $$
-\mathcal{L} = (1 - \lambda)\frac{\mathcal{L}_{sim}\left( I_{BG}',\ I_{C} \right)}{\alpha_{sim}^{2}} + \lambda\mathcal{L}_{smooth}(\phi) \tag{1}
+\mathcal{L} = (1 - \lambda)\frac{\mathcal{L}_{sim}\left( I_{BG}',\ I_{C} \right)}{\alpha_{sim}^{2}} + \lambda\mathcal{L}_{smooth}(\phi)
 $$
+Equation (1).
 
 where \(0 \leq \lambda \leq 1\) determines the relative weight between the image similarity loss and the smoothing penalty. \(\lambda\) is the only input to HyperNet, which is a multi-layer perceptron (consisting of 4 fully-connected layers with 32, 64, 128, 128 features and ReLU activations; in total, 27K trainable parameters), and generates the weights and biases \(\theta_{reg}\) of the RegNet (Fig. 1). We set the scaling parameter \(\alpha_{sim} = 0.3\), such that \(\mathcal{L}_{sim}/\alpha_{sim}^{2}\) and \(\mathcal{L}_{smooth}\) have approximately equivalent magnitude when \(\lambda = 0.5\).
 
 Smoothness of the registration field can be enforced by minimizing the magnitude of the spatial gradient of the morph field:
 
 $$
-\mathcal{L}_{smooth}(\phi) = \frac{1}{2}\left\| \nabla \phi \right\|^{2} \tag{2}
+\mathcal{L}_{smooth}(\phi) = \frac{1}{2}\left\| \nabla \phi \right\|^{2}
 $$
+Equation (2).
 
 We evaluated multiple image similarity loss functions \(\mathcal{L}_{sim}\) for our task. Notably, we aim to register a non-contrast background frame onto an image with post-contrast vascular densities, introducing a form of spatially heterogenous domain translation on top of the registration task. For this reason, we develop loss functions that strongly weight the bone and soft tissue densities that are common to both frames while simultaneously reducing the impact of regions with injected contrast.
 
@@ -43,8 +45,9 @@ We evaluated multiple image similarity loss functions \(\mathcal{L}_{sim}\) for 
 Our baseline model utilizes mean squared error (MSE), as in HyperMorph, to evaluate the image similarity between the morphed background frame \(I_{BG}'\) and the fixed contrast frame \(I_{C}\):
 
 $$
-\mathcal{L}_{sim}(I_{BG}',\ I_{C}) = MSE\left( I_{BG}',\ I_{C} \right) = \left\| I_{BG}' - I_{C} \right\|^{2} \tag{3}
+\mathcal{L}_{sim}(I_{BG}',\ I_{C}) = MSE\left( I_{BG}',\ I_{C} \right) = \left\| I_{BG}' - I_{C} \right\|^{2}
 $$
+Equation (3).
 
 ### Registration with MinMax Similarity Loss (Reg-MinMax)
 
@@ -53,24 +56,27 @@ The MSE loss cannot differentiate between 1) bone and soft tissue densities that
 To create an image similarity loss function that is robust to the presence of vascular densities, we attempt to separate the vessels from the background bone and soft tissue densities prior to applying an MSE loss. In our angiographic X-ray images, iodinated contrast will always increase the density and result in pixels that are darker than the background alone. Thus, the two pixel-wise operations \(\min( I_{BG}',\ I_{C} )\) and \(\max( I_{BG}',\ I_{C} )\) produce images with and without vascular densities, respectively. As registration improves during model training, the image with vascular densities will more accurately match the contrast frame \(I_{C}\), and the image without vascular densities will more accurately match the morphed background frame \(I_{BG}'\). This training objective is formulated mathematically as a MinMax loss:
 
 $$
-\mathcal{L}_{sim}\left( I_{BG}',\ I_{C} \right) = \frac{MSE\left( \min( I_{BG}',\ I_{C} ),\ I_{C} \right) + MSE\left( \max( I_{BG}',\ I_{C} ),\ I_{BG}' \right)}{2} \tag{4}
+\mathcal{L}_{sim}\left( I_{BG}',\ I_{C} \right) = \frac{MSE\left( \min( I_{BG}',\ I_{C} ),\ I_{C} \right) + MSE\left( \max( I_{BG}',\ I_{C} ),\ I_{BG}' \right)}{2}
 $$
+Equation (4).
 
 ### Registration with Vessel Layer Estimation (Reg-VLE)
 
 In an alternative approach, we propose an image similarity loss function that evaluates the MSE between the morphed background frame \(I_{BG}'\) and the fixed contrast frame \(I_{C}\) after exclusion of an iteratively refined estimate of the vessel layer \(L_{vessel}\). This image similarity loss is expressed as:
 
 $$
-\mathcal{L}_{sim}\left( I_{BG}',\ I_{C} \right) = MSE\left( I_{BG}',\ I_{C} - L_{vessel} \right) \tag{5}
+\mathcal{L}_{sim}\left( I_{BG}',\ I_{C} \right) = MSE\left( I_{BG}',\ I_{C} - L_{vessel} \right)
 $$
+Equation (5).
 
 To isolate the vessel layer, we perform an anomaly detection step, in which the vascular densities are identified by their low intensity. As illustrated in Fig. 1, we compare the value of a pixel in the post-contrast frame to the values within the neighborhood (e.g., a patch with 3 x 3 pixels) of the corresponding pixel in the background frame. If the pixel value of the contrast frame is less than all pixel values in the corresponding neighborhood of the background frame, it suggests that the low density of the pixel in the post-contrast frame is due to contrast injection. With this in mind, the separated vessel layer can be formulated as:
 
 $$
-L_{vessel} = \left( I_{C} - I_{BG}' \right) \odot \mathbb{1}\left( I_{C} < \operatorname{minpool}\left( I_{BG}' \right) \right) \tag{6}
+L_{vessel} = \left( I_{C} - I_{BG}' \right) \odot \mathbb{1}\left( I_{C} < \operatorname{minpool}\left( I_{BG}' \right) \right)
 $$
+Equation (6).
 
-where \(I_{C} - I_{BG}'\) is the BSA with registration learning. \(\odot\) denotes pixel-wise multiplication. \(\mathbb{1}(\text{condition})\) is a pixel-wise indicator function, which returns 1 if the condition is satisfied and 0 otherwise. \(\operatorname{minpool}\left( I_{BG}' \right)\) represents the minimum pooling of \(I_{BG}'\) with a kernel size of 3 × 3, a stride of 1, and same padding. The output has the same shape as \(I_{BG}'\), and is equivalent to obtaining the minimal values in all 3 × 3 patches centered at each pixel of \(I_{BG}'\).
+where \(I_{C} - I_{BG}'\) is the BSA with registration learning. \(\odot\) denotes pixel-wise multiplication. \(\mathbb{1}(\text{condition})\) is a pixel-wise indicator function, which returns 1 if the condition is satisfied and 0 otherwise. \(\operatorname{minpool}\left( I_{BG}' \right)\) represents the minimum pooling of \(I_{BG}'\) with a kernel size of 3 x 3, a stride of 1, and same padding. The output has the same shape as \(I_{BG}'\), and is equivalent to obtaining the minimal values in all 3 x 3 patches centered at each pixel of \(I_{BG}'\).
 
 ## Model Training
 
