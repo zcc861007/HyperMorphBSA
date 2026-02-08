@@ -12,7 +12,7 @@ We have implemented an unsupervised deep learning deformable registration framew
 
 ## Model Implementation 
 
-Please check more details in the [blog article](https://zcc861007.github.io/MyBlog/blog/unsup-dl-for-def-reg/#unsupervised-deep-learning-framework)
+Please check more details in the [blog article](https://zcc861007.github.io/MyBlog/blog/unsup-dl-def-reg/)
 
 ## Citation
 
