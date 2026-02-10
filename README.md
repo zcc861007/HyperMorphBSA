@@ -12,7 +12,7 @@ We have implemented an unsupervised deep learning deformable registration framew
 
 ## Model Implementation 
 
-For a concise overview, please check the [blog article](https://zcc861007.github.io/MyBlog/blog/unsup-dl-def-reg/) for a brief introduction. Detailed methodology and evaluation can be found in the [original paper](https://academic.oup.com/radadv/article/1/3/umae020/7727676).
+For a concise overview of the model implementaion, please check the [blog article](https://zcc861007.github.io/MyBlog/blog/unsup-dl-def-reg/). More detailed methodology and evaluation can be found in the [original paper](https://academic.oup.com/radadv/article/1/3/umae020/7727676).
 
 ## Citation
 
